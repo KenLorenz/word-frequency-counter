@@ -1,10 +1,17 @@
 <!DOCTYPE html>
+
+<?php
+    include("process.php");
+
+?>
+
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Word Frequency Counter</title>
     <link rel="stylesheet" type="text/css" href="styles.css">
-
+    <link rel="stylesheet" href="index.php">
+    
 </head>
 <body>
     <h1>Word Frequency Counter</h1>
