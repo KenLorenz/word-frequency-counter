@@ -13,12 +13,7 @@ function arrayToAssocArrayInt(array $arr):array{
     return $newArr;
 }
 
-//include("index.php");
-
-
-
-
-
+include("index.php");
 
 $str = explode(" ", strtolower($_POST['text']));
 $sort = $_POST['sort'];
@@ -59,6 +54,7 @@ for($i = 0; $i < sizeof($strWord) - $limit; $i++){
 foreach($limitArr as $x){
     echo $x, '<br>';
 }
+
 //display limit of showing words like mysql lol
 //"The output should be presented in a clear and readable format." I gotchu.
 
