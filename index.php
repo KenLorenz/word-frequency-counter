@@ -5,6 +5,11 @@
 
 ?>
 
+<script> //Prevents page load to process.php.
+    document.getElementById("form-table").addEventListener("submit", function (e) {
+        e.preventDefault();
+    });
+</script>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -16,7 +21,7 @@
 <body>
     <h1>Word Frequency Counter</h1>
     
-    <form action="process.php" method="post">
+    <form action="process.php" method="post" id="form-table">
         <label for="text">Paste your text here:</label><br>
         <textarea id="text" name="text" rows="10" cols="50" required></textarea><br><br>
         
@@ -31,5 +36,16 @@
         
         <input type="submit" value="Calculate Word Frequency">
     </form>
+
+    <section>
+        <div id="result-table">
+            <div class="result-header"><h1>Word Frequency: </h1></div>
+            <?php
+            foreach($limitArr as $x){
+                echo $x, '<br>';
+            }
+            ?>
+        </div>
+    </section>
 </body>
 </html>

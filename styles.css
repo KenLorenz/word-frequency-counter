@@ -7,7 +7,7 @@ body {
 }
 
 /* Style the form container */
-form {
+form, #result-table{
     background-color: #fff;
     border: 1px solid #ccc;
     padding: 20px;
@@ -15,8 +15,23 @@ form {
     margin: 0 auto;
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
 }
 
+
+.result-header{
+    display: flex;
+    justify-content: center;
+}
+
+.result-header h1{
+    padding: 10px 15px;
+    border-style: solid;
+    border-width: 0.2px;
+    border-color: #cccccc;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
 /* Style form labels and inputs */
 label {
     font-weight: bold;
@@ -27,7 +42,7 @@ label {
 textarea,
 select,
 input[type="number"] {
-    width: 100%;
+    width: 92%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
