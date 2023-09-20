@@ -26,6 +26,16 @@ for($i = 0; $i < count($str); $i++){ //word count for each word
         $wholeArr[$str[$i]]++;
     }
 }
+
+switch($sort){
+    case 'asc':
+        asort($wholeArr);
+    break;
+    case 'desc':
+        arsort($wholeArr);
+    break;
+}
+
 /*
 //krsort ksort for keys sort
 
