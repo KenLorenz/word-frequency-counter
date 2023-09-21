@@ -3,6 +3,19 @@
 <?php
 
 /*
+    * Take care of punctuations and prepare for array conversion.
+    *
+    * @param string $postTxt the user input.
+    * @return array Each of the word put into array.
+*/
+function textAreaToArray(string $postTxt):array{
+    $puncArr = [", ", ". ", ": ", "; ", ",", ".", ":", ";"];
+    foreach($puncArr as $x){
+        $postTxt = str_replace($x, " ", $postTxt);
+    }
+    return explode(" ", $postTxt);
+}
+/*
     * Convert array into associative array with unique words as key and has value, and return the result.
     * Does not include non counted words to the result.
     *
@@ -54,8 +67,12 @@ function printWithLimit(array $resultArr, float $limit): void{
     return;
 }
 
+
 //acquisition of data from POST
-$postArr = explode(" ", strtolower($_POST['text']));
+//$postArr = explode(" ", strtolower($_POST['text']));
+$postTxt = strtolower($_POST["text"]);
+$postArr = textAreaToArray($postTxt);
+
 $sort = $_POST["sort"];
 $limit = $_POST["limit"];
 
