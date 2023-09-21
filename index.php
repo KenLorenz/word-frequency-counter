@@ -2,13 +2,45 @@
 
 <?php
 
+function arrTableConstruct(array $postArr):array{
+    $wordArr = []; $valueArr = [];
+    foreach($postArr as $x){
+        if(!in_array($x, $wordArr)){
+            $wordArr[] = $x;
+            $valueArr[] = 0;
+        }
+    }
+    return array_combine($wordArr, $valueArr);
+}
+
+function sortingOrder(array $arr, string $sort):array{
+    switch($sort){
+        case "asc":
+            return asort($arr);
+        case "desc":
+            return arsort($arr);
+    }
+    return $arr;
+}
+
+function printWithLimit (array $arr, float $limit): void{
+    $notWord = ["the", "a", "is", "this", "an", "and", "as", "at", "but", "if"
+            ,"in", "it", "of", "on", "or", "to", "with"];
+
+    for($i = 0, $key = array_keys($arr); $i < sizeof($arr); $i++){
+        if(!in_array($key[$i], $notWord)){
+            echo $key[$i], ": ", $arr[$key[$i]], "<br>";
+        }
+        if(($i + 1) == $limit) break;
+    }
+}
+
 $str = explode(" ", strtolower($_POST['text']));
 $sort = $_POST["sort"];
 $limit = $_POST["limit"];
 
-$notWord = ["the", "a", "is", "this", "an", "and", "as", "at", "but", "if"
-            ,"in", "it", "of", "on", "or", "to", "with"];
-
+$wholeArr = arrTableConstruct($str);
+/*
 $wordNum = [];
 $strWord = []; //aligning amount of word and value.
 for($i = 0; $i < sizeof($str); $i++){
@@ -19,7 +51,7 @@ for($i = 0; $i < sizeof($str); $i++){
 }
 
 $wholeArr = array_combine($strWord, $wordNum); //combine! adding value to words.
-
+*/
 
 for($i = 0; $i < count($str); $i++){ //word count for each word
     if(in_array($str[$i], array_keys($wholeArr))){
@@ -27,31 +59,17 @@ for($i = 0; $i < count($str); $i++){ //word count for each word
     }
 }
 
-switch($sort){
-    case 'asc':
+$sort == "asc" ? asort($wholeArr) : arsort($wholeArr);
+//$wholeArr = sortingOrder($wholeArr, $sort); //fix this thing later
+/*switch($sort){
+    case "asc":
         asort($wholeArr);
-    break;
-    case 'desc':
+        break;
+    case "desc":
         arsort($wholeArr);
-    break;
-}
-
-/*
-//krsort ksort for keys sort
-
-switch($sort){
-    case 'asc':
-        sort($strWord);
-    break;
-    case 'desc':
-        arsort($strWord);
-    break;
-}
-
-$limitArr = [];
-for($i = 0; $i < sizeof($strWord) - $limit; $i++){
-   $limitArr[$str[$i]] = $strWord[$str[$i]];
+        break;
 }*/
+
 ?>
 
 <html>
@@ -84,23 +102,7 @@ for($i = 0; $i < sizeof($strWord) - $limit; $i++){
         <div id="result-table">
             <div class="result-header"><h1>Word Frequency: </h1></div>
             <?php
-                /*
-                var_dump($str);
-                echo '<br>';
-                var_dump($strWord);
-                echo '<br>';
-                var_dump($wordNum);
-                echo '<br>';*/
-                $count = 1;
-                foreach($wholeArr as $key => $value){
-                    if(!in_array($key, $notWord)){
-                        echo $key, ": ", $value, "<br>";
-                    }
-                    if ($count == $limit){
-                        break;
-                    }
-                    $count++;
-                }
+                printWithLimit($wholeArr, $limit);
             ?>
         </div>
     </section>
