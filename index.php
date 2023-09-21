@@ -13,6 +13,15 @@ function arrTableConstruct(array $postArr):array{
     return array_combine($wordArr, $valueArr);
 }
 
+function wordCount(array $arr, array $inputArr):array{
+    for($i = 0; $i < count($inputArr); $i++){
+        if(in_array($inputArr[$i], array_keys($arr))){
+            $arr[$inputArr[$i]]++;
+        }
+    }
+    return $arr;
+}
+
 function sortingOrder(array $arr, string $sort):array{
     switch($sort){
         case "asc":
@@ -35,41 +44,16 @@ function printWithLimit (array $arr, float $limit): void{
     }
 }
 
+//acquisition of data from POST
 $str = explode(" ", strtolower($_POST['text']));
 $sort = $_POST["sort"];
 $limit = $_POST["limit"];
 
-$wholeArr = arrTableConstruct($str);
-/*
-$wordNum = [];
-$strWord = []; //aligning amount of word and value.
-for($i = 0; $i < sizeof($str); $i++){
-    if(!in_array($str[$i], $strWord)){
-        $strWord[$i] = $str[$i];
-        $wordNum[$i] = 0;
-    }
-}
+$resultArr = arrTableConstruct($str);
 
-$wholeArr = array_combine($strWord, $wordNum); //combine! adding value to words.
-*/
+$resultArr = wordCount($resultArr, $str);
 
-for($i = 0; $i < count($str); $i++){ //word count for each word
-    if(in_array($str[$i], array_keys($wholeArr))){
-        $wholeArr[$str[$i]]++;
-    }
-}
-
-$sort == "asc" ? asort($wholeArr) : arsort($wholeArr);
-//$wholeArr = sortingOrder($wholeArr, $sort); //fix this thing later
-/*switch($sort){
-    case "asc":
-        asort($wholeArr);
-        break;
-    case "desc":
-        arsort($wholeArr);
-        break;
-}*/
-
+$sort == "asc" ? asort($resultArr) : arsort($resultArr);
 ?>
 
 <html>
@@ -102,7 +86,7 @@ $sort == "asc" ? asort($wholeArr) : arsort($wholeArr);
         <div id="result-table">
             <div class="result-header"><h1>Word Frequency: </h1></div>
             <?php
-                printWithLimit($wholeArr, $limit);
+                printWithLimit($resultArr, $limit);
             ?>
         </div>
     </section>
