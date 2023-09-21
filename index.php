@@ -2,10 +2,19 @@
 
 <?php
 
+/*
+    * Convert array into associative array with unique words as key and has value, and return the result.
+    * Does not include non counted words to the result.
+    *
+    * @param array $postArr the user input's array.
+    * @return array the combination of $wordArr and $valueArr.
+*/
 function arrTableConstruct(array $postArr):array{
+    $notWord = ["the", "a", "is", "this", "an", "and", "s", "at", "but", "if"
+            ,"in", "it", "of", "on", "or", "to", "with", ""];
     $wordArr = []; $valueArr = [];
     foreach($postArr as $x){
-        if(!in_array($x, $wordArr)){
+        if(!in_array($x, $wordArr) && !in_array($x, $notWord)){
             $wordArr[] = $x;
             $valueArr[] = 0;
         }
@@ -13,46 +22,48 @@ function arrTableConstruct(array $postArr):array{
     return array_combine($wordArr, $valueArr);
 }
 
-function wordCount(array $arr, array $inputArr):array{
-    for($i = 0; $i < count($inputArr); $i++){
-        if(in_array($inputArr[$i], array_keys($arr))){
-            $arr[$inputArr[$i]]++;
+/*
+    * Count the words in the user input using associative array.
+    *
+    * @param array $resultArr The associative array with key words and int values.
+    * @param array $postArr The user input array.
+    * @return array Words frequency counted, resultArr values updated.
+*/
+function wordCount(array $resultArr, array $postArr):array{
+    for($i = 0; $i < count($postArr); $i++){
+        if(in_array($postArr[$i], array_keys($resultArr))){
+            $resultArr[$postArr[$i]]++;
         }
     }
-    return $arr;
+    return $resultArr;
 }
 
-function sortingOrder(array $arr, string $sort):array{
-    switch($sort){
-        case "asc":
-            return asort($arr);
-        case "desc":
-            return arsort($arr);
+/*
+    * print the $ResultArr depending on word limit.
+    *
+    * @param array $resultArr The associative array with key words and int values.
+    * @param array $limit The user input preferred word limit.
+    * echo $resultArr.
+    * @return void.
+*/
+function printWithLimit(array $resultArr, float $limit): void{
+    for($i = 0, $count = 1,$key = array_keys($resultArr); $i < sizeof($resultArr); $i++, $count++){
+        echo $key[$i], ": ", $resultArr[$key[$i]], "<br>";
+        if($count == $limit) break;
     }
-    return $arr;
-}
-
-function printWithLimit (array $arr, float $limit): void{
-    $notWord = ["the", "a", "is", "this", "an", "and", "as", "at", "but", "if"
-            ,"in", "it", "of", "on", "or", "to", "with"];
-
-    for($i = 0, $key = array_keys($arr); $i < sizeof($arr); $i++){
-        if(!in_array($key[$i], $notWord)){
-            echo $key[$i], ": ", $arr[$key[$i]], "<br>";
-        }
-        if(($i + 1) == $limit) break;
-    }
+    return;
 }
 
 //acquisition of data from POST
-$str = explode(" ", strtolower($_POST['text']));
+$postArr = explode(" ", strtolower($_POST['text']));
 $sort = $_POST["sort"];
 $limit = $_POST["limit"];
 
-$resultArr = arrTableConstruct($str);
+$resultArr = arrTableConstruct($postArr);
 
-$resultArr = wordCount($resultArr, $str);
+$resultArr = wordCount($resultArr, $postArr);
 
+// sorts $resultArr based on $sort. asort = ascending, arsort = descending.
 $sort == "asc" ? asort($resultArr) : arsort($resultArr);
 ?>
 
@@ -64,7 +75,7 @@ $sort == "asc" ? asort($resultArr) : arsort($resultArr);
 </head>
 <body>
     <h1>Word Frequency Counter</h1>
-    <p>Counter does not detect mispelled words, please check it yourself for self beneficial accuracy.</p>
+    <p>Check the spellings for self-beneficial accuracy.</p>
     
     <form action="#" method="post" id="form-table">
         <label for="text">Paste your text here: </label><br>
