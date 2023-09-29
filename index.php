@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <?php
-
 /*
     * Take care of punctuations and prepare for array conversion.
     *
@@ -9,7 +8,7 @@
     * @return array Each of the word put into array.
 */
 function textAreaToArray(string $postTxt):array{
-    $puncArr = [", ", ". ", ": ", "; ", ",", ".", ":", ";"];
+    $puncArr = [", ", ". ", ": ", "; "];
     foreach($puncArr as $x){
         $postTxt = str_replace($x, " ", $postTxt);
     }
